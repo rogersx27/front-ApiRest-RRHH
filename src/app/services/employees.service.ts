@@ -1,77 +1,90 @@
-import { Employee } from './../utils/interfaces/employee';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { ApiService } from './../Api.service';
+import { Employee } from '../utils/models/employee.model';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpResponse,
+} from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { handleError, verifyEmail } from '../utils';
+import { catchResponse, handleError, verifyEmail } from '../utils';
 import { catchError, map, Observable, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EmployeesService {
-  private http = inject(HttpClient);
+  constructor(private ApiService: ApiService) {}
 
   getAll() {
-    return this.http.get('http://localhost:8080/api/v1/employees/all');
+    const response = this.ApiService.get<Employee[]>(
+      'http://localhost:8080/api/v1/employees/all'
+    );
+
+    return response;
   }
 
   getById(id: number) {
-    return this.http.get(`http://localhost:8080/api/v1/employees/find/id/{id}`);
+    const response = this.ApiService.get<Employee>(
+      `http://localhost:8080/api/v1/employees/find/${id}`
+    );
+
+    return response;
   }
 
-  getByEmail(email: string): Observable<any> {
-    if (verifyEmail(email)) {
-      return throwError(() => new Error('Invalid email'));
+  getByEmail(email: string): Observable<Employee> {
+    try {
+      verifyEmail(email);
+    } catch (error: any) {
+      return handleError(error);
     }
 
-    return this.http
-      .get(`http://localhost:8080/api/v1/employees/find/email/{email}`, {
-        observe: 'response',
-      })
-      .pipe(
-        map((response: HttpResponse<any>) => {
-          return {
-            status: response.status,
-            body: response.body,
-          };
-        }),
-        catchError(handleError)
-      );
+    const response = this.ApiService.get<Employee>(
+      `http://localhost:8080/api/v1/employees/find/email/${email}`
+    );
+
+    return response;
   }
 
-  getByPhoneNumber(phoneNumber: string) {
-    return this.http.get(
-      `http://localhost:8080/api/v1/employees/find/phone/{phoneNumber}`
+  getByPhoneNumber(phoneNumber: number) {
+    const response = this.ApiService.get<Employee>(
+      `http://localhost:8080/api/v1/employees/find/phone/${phoneNumber}`
     );
+
+    return response;
   }
 
   getByHireDate(hireDate: string) {
-    return this.http.get(
-      `http://localhost:8080/api/v1/employees/find/hiredate/{hireDate}`
+    const response = this.ApiService.get<Employee>(
+      `http://localhost:8080/api/v1/employees/find/hiredate/${hireDate}`
     );
+
+    return response;
   }
 
   getByPositionId(positionId: number) {
-    return this.http.get(
-      `http://localhost:8080/api/v1/employees/find/position/{positionId}`
+    const response = this.ApiService.get<Employee>(
+      `http://localhost:8080/api/v1/employees/find/position/${positionId}`
     );
+
+    return response;
   }
 
   create(employee: Employee) {
-    return this.http.post(
-      'http://localhost:8080/api/v1/employees/save',
+    return this.ApiService.post<Employee>(
+      `http://localhost:8080/api/v1/employees/create`,
       employee
     );
   }
 
   updateById(id: number, employee: Employee) {
-    return this.http.put(
+    return this.ApiService.put<Employee>(
       `http://localhost:8080/api/v1/employees/update/${id}`,
       employee
     );
   }
 
   deleteById(id: number) {
-    return this.http.delete(
+    return this.ApiService.delete<Employee>(
       `http://localhost:8080/api/v1/employees/delete/${id}`
     );
   }

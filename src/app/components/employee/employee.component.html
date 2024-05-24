@@ -1,0 +1,20 @@
+<div *ngIf="Employee$ | async as employee; else loading">
+  <h1>{{ employee.firstName }} {{ employee.lastName }}</h1>
+  <p>Email: {{ employee.email }}</p>
+  <p>Phone: {{ employee.phoneNumber }}</p>
+  <!-- Otros detalles del empleado -->
+</div>
+<ng-template #loading>
+  <p>Loading...</p>
+</ng-template>
+
+<!-- Formulario para agregar/actualizar empleados -->
+<form (ngSubmit)="addEmployee(employeeForm.value)" #employeeForm="ngForm">
+  <!-- Campos del formulario -->
+  <input type="text" name="firstName" ngModel>
+  <input type="text" name="lastName" ngModel>
+  <input type="email" name="email" ngModel>
+  <input type="text" name="phoneNumber" ngModel>
+  <!-- Otros campos según sea necesario -->
+  <button type="submit">Add Employee</button>
+</form>

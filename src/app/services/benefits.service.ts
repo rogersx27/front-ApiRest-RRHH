@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, inject, Injectable } from '@angular/core';
-import { Benefit } from '../utils/interfaces/benefit';
+import { Benefit } from '../utils/models/benefit.model';
 
 @Injectable({
   providedIn: 'root',

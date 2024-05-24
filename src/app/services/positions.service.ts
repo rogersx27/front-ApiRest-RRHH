@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Position } from '../utils/interfaces/position';
+import { Position } from '../utils/models/position.model';
 
 @Injectable({
   providedIn: 'root',

@@ -19,6 +19,7 @@ export class EmployeesService {
   }
 
   getByEmail(email: string): Observable<any> {
+//! esto es mejor desde el servidor?
     if (verifyEmail(email)) {
       return throwError(() => new Error('Invalid email'));
     }

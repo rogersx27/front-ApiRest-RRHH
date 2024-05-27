@@ -1,0 +1,30 @@
+<div class="container">
+
+  <h2>Positions</h2>
+
+  <div class="text-end">
+    <button class="btn btn-primary" routerLink="/position/create" >
+      New Position
+    </button>
+  </div>
+
+  <div class="table-responsive">
+
+    <table class="table table-hover">
+      <thead>
+        <th>Title</th>
+        <th>description</th>
+        <th>salary</th>
+      </thead>
+      <tbody>
+        @for (position of positions; track position.id) {
+          <tr>
+            <td>{{ position.title }}</td>
+            <td>{{ position.description }}</td>
+            <td>{{ position.salary }}</td>
+          </tr>
+        }
+    </table>
+  </div>
+
+</div>

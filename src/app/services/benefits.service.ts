@@ -1,37 +1,46 @@
+import { ApiService } from '../Api.service';
 import { HttpClient } from '@angular/common/http';
 import { Inject, inject, Injectable } from '@angular/core';
-import { Benefit } from '../utils/models/benefit.model';
+import { Benefit } from '../utils/interfaces/benefit.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BenfitService {
-  private http = inject(HttpClient);
+  constructor(private ApiService: ApiService) {}
 
   getAll() {
-    return this.http.get('http://localhost:8080/api/v1/benefits/all');
+    const response = this.ApiService.get<Benefit[]>(
+      'http://localhost:8080/api/v1/benefits/all'
+    );
+
+    return response;
   }
 
   getById(id: number) {
-    return this.http.get(`http://localhost:8080/api/v1/benefits/find/id/${id}`);
+    const response = this.ApiService.get<Benefit>(
+      `http://localhost:8080/api/v1/benefits/find/${id}`
+    );
+
+    response;
   }
 
   create(benefit: Benefit) {
-    return this.http.post(
+    const response = this.ApiService.post<Benefit>(
       'http://localhost:8080/api/v1/benefits/save',
       benefit
     );
   }
 
   updateById(id: number, benefit: Benefit) {
-    return this.http.put(
+    const response = this.ApiService.put<Benefit>(
       `http://localhost:8080/api/v1/benefits/update/${id}`,
       benefit
     );
   }
 
   deleteById(id: number) {
-    return this.http.delete(
+    const response = this.ApiService.delete<Benefit>(
       `http://localhost:8080/api/v1/benefits/delete/${id}`
     );
   }

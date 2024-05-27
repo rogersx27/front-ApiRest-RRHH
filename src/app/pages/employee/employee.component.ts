@@ -1,6 +1,6 @@
 import { EmployeesService } from './../../services/employees.service';
 import { Observable } from 'rxjs';
-import { Employee } from './../../utils/models/employee.model';
+import { Employee } from '../../utils/interfaces/employee.interface';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -18,11 +18,13 @@ export default class EmployeeComponent implements OnInit {
   constructor(private employeeService: EmployeesService) {}
 
   ngOnInit(): void {
-    const email = 'juan@mail.com';
-    this.Employee$ = this.getEmployeeByEmail(email);
+    const value = '2024-05-20';
+    const value2 = 'juan1@mail.com';
+
+    this.Employee$ = this.getEmployeeByHireDate(value);
 
     this.Employee$.subscribe((employee) => {
-      console.log(employee);
+      console.log("hire date", employee);
     });
   }
 

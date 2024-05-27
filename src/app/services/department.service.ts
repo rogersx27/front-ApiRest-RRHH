@@ -1,38 +1,53 @@
+import { ApiService } from '../Api.service';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Department } from '../utils/models/department.model';
+import { Department } from '../utils/interfaces/department.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DepartmentService {
-  private http = inject(HttpClient);
+  constructor(private ApiService: ApiService) {}
 
   getAll() {
-    return this.http.get('http://localhost:8080/api/v1/departments/all');
+    const response = this.ApiService.get<Department[]>(
+      'http://localhost:8080/api/v1/departments/all'
+    );
+
+    return response;
   }
 
   getById(id: number) {
-    return this.http.get(`http://localhost:8080/api/v1/departments/find/id/${id}`);
+    const response = this.ApiService.get<Department>(
+      `http://localhost:8080/api/v1/departments/find/${id}`
+    );
+
+    return response;
   }
 
   create(department: Department) {
-    return this.http.post(
+    const response = this.ApiService.post<Department>(
       'http://localhost:8080/api/v1/departments/save',
       department
     );
+
+    return response;
   }
 
   updateById(id: number, department: Department) {
-    return this.http.put(
+    const response = this.ApiService.put<Department>(
       `http://localhost:8080/api/v1/departments/update/${id}`,
       department
     );
+
+    return response;
   }
 
   deleteById(id: number) {
-    return this.http.delete(
+    const response = this.ApiService.delete<Department>(
       `http://localhost:8080/api/v1/departments/delete/${id}`
     );
+
+    return response;
   }
 }

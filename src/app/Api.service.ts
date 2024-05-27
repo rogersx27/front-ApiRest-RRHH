@@ -27,13 +27,13 @@ export class ApiService {
     return response;
   }
 
-  public post<T>(url: string, body: any, options?: any): Observable<T>{
+  public post<T>(url: string, body: any, options?: any): Observable<T> {
     const request = this.http.post<T>(url, body, {
       observe: 'response',
       ...options,
     }) as Observable<HttpResponse<T>>;
 
-    const response = catchResponse(request)
+    const response = catchResponse(request);
     return response;
   }
 
@@ -43,7 +43,7 @@ export class ApiService {
       ...options,
     }) as Observable<HttpResponse<T>>;
 
-    const response = catchResponse(request)
+    const response = catchResponse(request);
 
     return response;
   }
@@ -54,7 +54,7 @@ export class ApiService {
       ...options,
     }) as Observable<HttpResponse<T>>;
 
-    const response = catchResponse(request)
+    const response = catchResponse(request);
 
     return response;
   }

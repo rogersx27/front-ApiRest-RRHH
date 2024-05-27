@@ -1,38 +1,52 @@
+import { ApiService } from './../Api.service';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Position } from '../utils/models/position.model';
+import { Position, positionDAO } from '../utils/interfaces/position.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PositionsService {
-  private http = inject(HttpClient);
+  constructor(private ApiService: ApiService) {}
 
   getAll() {
-    return this.http.get('http://localhost:8080/api/v1/positions/all');
+    const response = this.ApiService.get<Position[]>(
+      'http://localhost:8080/api/v1/positions/all'
+    );
+
+    return response;
   }
 
   getById(id: number) {
-    return this.http.get(`http://localhost:8080/api/v1/positions/find/id/${id}`);
-  }
+    const response = this.ApiService.get<Position>(
+      `http://localhost:8080/api/v1/positions/find/${id}`
+    );
 
-  create(position: Position) {
-    return this.http.post(
+    return response;
+  }
+  create(position: positionDAO) {
+    const response = this.ApiService.post<Position>(
       'http://localhost:8080/api/v1/positions/save',
       position
     );
+
+    return response;
   }
 
   updateById(id: number, position: Position) {
-    return this.http.put(
+    const response = this.ApiService.put<Position>(
       `http://localhost:8080/api/v1/positions/update/${id}`,
       position
     );
+
+    return response;
   }
 
   deleteById(id: number) {
-    return this.http.delete(
+    const response = this.ApiService.delete<Position>(
       `http://localhost:8080/api/v1/positions/delete/${id}`
     );
+
+    return response;
   }
 }

@@ -1,5 +1,5 @@
 import { ApiService } from './../Api.service';
-import { Employee } from '../utils/models/employee.model';
+import { Employee } from '../utils/interfaces/employee.interface';
 import {
   HttpClient,
   HttpErrorResponse,
@@ -45,7 +45,7 @@ export class EmployeesService {
     return response;
   }
 
-  getByPhoneNumber(phoneNumber: number) {
+  getByPhoneNumber(phoneNumber: number): Observable<Employee> {
     const response = this.ApiService.get<Employee>(
       `http://localhost:8080/api/v1/employees/find/phone/${phoneNumber}`
     );
@@ -53,7 +53,7 @@ export class EmployeesService {
     return response;
   }
 
-  getByHireDate(hireDate: string) {
+  getByHireDate(hireDate: string): Observable<Employee> {
     const response = this.ApiService.get<Employee>(
       `http://localhost:8080/api/v1/employees/find/hiredate/${hireDate}`
     );
@@ -70,22 +70,28 @@ export class EmployeesService {
   }
 
   create(employee: Employee) {
-    return this.ApiService.post<Employee>(
-      `http://localhost:8080/api/v1/employees/create`,
+    const response = this.ApiService.post<Employee>(
+      `http://localhost:8080/api/v1/employees/save`,
       employee
     );
+
+    return response;
   }
 
   updateById(id: number, employee: Employee) {
-    return this.ApiService.put<Employee>(
-      `http://localhost:8080/api/v1/employees/update/${id}`,
+    const response = this.ApiService.put<Employee>(
+      ` http://localhost:8080/api/v1/employees/update/${id}`,
       employee
     );
+
+    return response;
   }
 
   deleteById(id: number) {
-    return this.ApiService.delete<Employee>(
+    const response = this.ApiService.delete<Employee>(
       `http://localhost:8080/api/v1/employees/delete/${id}`
     );
+
+    return response;
   }
 }

@@ -16,13 +16,13 @@ export class ApiService {
    * @param {any} [options] - Additional options for the request.
    * @returns `observable` - An Observable that emits the response data.
    */
-  public get<T>(url: string, options?: any) {
+  public get<T>(url: string, options?: any): Observable<T> {
     const request = this.http.get<T>(url, {
       observe: 'response',
       ...options,
     }) as Observable<HttpResponse<T>>;
 
-    const response = catchResponse(request) as Observable<T>;
+    const response = catchResponse(request);
 
     return response;
   }
@@ -37,7 +37,7 @@ export class ApiService {
     return response;
   }
 
-  public put<T>(url: string, body: any, options?: any) {
+  public put<T>(url: string, body: any, options?: any): Observable<T> {
     const request = this.http.put<T>(url, body, {
       observe: 'response',
       ...options,

@@ -25,14 +25,8 @@ export class PositionListComponent implements OnInit {
     });
   }
 
-  editPosition(id: number) {
-    this.positionService.getById(id).subscribe((data: Position) => {
-      console.log(data);
-    });
-  }
-
-  deletePosition(id: number) {
-    this.positionService.deleteById(id).subscribe(() => {
+  deletePosition(position: Position) {
+    this.positionService.deleteById(position.id).subscribe((data: Position) => {
       this.loadPositions();
     });
   }

@@ -33,7 +33,7 @@ export class PositionsService {
     return response;
   }
 
-  updateById(id: number, position: Position) {
+  updateById(id: number, position: positionDAO) {
     const response = this.ApiService.put<Position>(
       `http://localhost:8080/api/v1/positions/update/${id}`,
       position

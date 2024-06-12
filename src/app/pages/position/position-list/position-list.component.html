@@ -22,6 +22,16 @@
             <td>{{ position.title }}</td>
             <td>{{ position.description }}</td>
             <td>{{ position.salary }}</td>
+            <td class="text-end">
+              <div class="btn-group">
+                <button class="btn btn-primary" routerLink="/position/edit/{{ position.id }}" >
+                  Edit
+                </button>
+                <button class="btn btn-danger" (click)="deletePosition(position)">
+                  Delete
+                </button>
+              </div>
+            </td>
           </tr>
         }
     </table>

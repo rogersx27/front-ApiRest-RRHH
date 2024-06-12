@@ -16,11 +16,7 @@ export const routes: Routes = [
   },
   {
     path: 'position/edit/:id',
-    component: PositionComponent,
-  },
-  {
-    path: '',
-    redirectTo: 'position',
-    pathMatch: 'full',
-  },
+    loadComponent: () =>
+      import('./pages/position/position-form/position-form.component'),
+  }
 ];

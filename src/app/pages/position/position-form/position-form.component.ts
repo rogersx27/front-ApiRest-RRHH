@@ -5,10 +5,9 @@ import {
   positionDAO,
 } from '../../../utils/interfaces/position.interface';
 import { Component, inject, NgModule, OnInit } from '@angular/core';
-import { Position as PositionModel } from '../../../models/position.model';
-import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
+  FormGroup,
   FormsModule,
   ReactiveFormsModule,
   Validators,
@@ -20,31 +19,59 @@ import {
   imports: [RouterModule, ReactiveFormsModule],
   templateUrl: './position-form.component.html',
 })
-export default class PositionFormComponent {
+export default class PositionFormComponent implements OnInit {
   private fb = inject(FormBuilder);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
 
   constructor(
     private positionsService: PositionsService,
-    private router: Router
+    // private router: Router,
+    // private route: ActivatedRoute
   ) {}
 
-  form = this.fb.group({
-    title: ['', [Validators.required]],
-    description: ['', [Validators.required]],
-    salary: ['', [Validators.required]],
-  });
+  form?: FormGroup;
+  position?: Position;
 
-  create() {
-    const formValue = this.form.value;
+  ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+
+    if (id) {
+      this.positionsService.getById(parseInt(id)).subscribe((position) => {
+        this.position = position;
+        this.form = this.fb.group({
+          title: [position.title, [Validators.required]],
+          description: [position.description, [Validators.required]],
+          salary: [position.salary, [Validators.required]],
+        });
+      });
+    }
+
+    this.form = this.fb.group({
+      title: ['', [Validators.required]],
+      description: ['', [Validators.required]],
+      salary: ['', [Validators.required]],
+    });
+  }
+
+  save() {
+    const formValue = this.form!.value;
 
     const position: positionDAO = {
-      title: formValue.title || '',
-      description: formValue.description || '',
-      salary: Number(formValue.salary) || 0 
+      title: formValue.title,
+      description: formValue.description,
+      salary: Number(formValue.salary),
     };
 
-    this.positionsService.create(position).subscribe(() => {
-      this.router.navigate(['/']);
-    });
+    if (this.position) {
+      this.positionsService
+        .updateById(this.position.id, position).subscribe(() => {});
+      
+        this.router.navigate(['/position']);
+    } else {
+      this.positionsService.create(position).subscribe(() => {
+        this.router.navigate(['/position']);
+      });
+    }
   }
 }

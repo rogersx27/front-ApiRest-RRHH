@@ -10,3 +10,10 @@ export interface positionDAO {
   description: string;
   salary: number;
 }
+
+export interface positionDTO {
+  id: number;
+  title: string;
+  description: string;
+  salary: number;
+}

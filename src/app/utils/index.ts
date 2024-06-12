@@ -19,7 +19,7 @@ export function handleError(message: string): Observable<never> {
 export function handleHttpError(error: HttpErrorResponse): Observable<never> {
   let errorMessage: string;
 
-  if (error.error instanceof ErrorEvent) {
+  if (error.error) {
     errorMessage = `Client-side error: ${error.error.message}`;
   }
 
@@ -33,12 +33,13 @@ export function handleResponse<T>(res: HttpResponse<T>): T {
     throw new Error(`Not found: ${res.statusText}`);
   }
 
+  console.log('Response:', res);
   return res.body as T;
 }
 
 export function catchResponse<T>(
   request: Observable<HttpResponse<T>>
-): Observable<any> {
+): Observable<T> {
   return request.pipe(
     map((res: HttpResponse<any>) => handleResponse(res)),
     catchError((error: HttpErrorResponse) => handleHttpError(error))
